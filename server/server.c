@@ -12,14 +12,25 @@ int main(int argc, char* argv[]) {
     char *ip = argv[1];
     int port = atoi(argv[2]);
 
-    // Define variables
-    char buffer[MAX_LINE] = {0};
+    // Define the buffer and initialize it to 0
+    char *buffer = malloc(MAX_LINE * sizeof(char));
+    if (buffer == NULL) {
+        perror("malloc error");
+        return EXIT_FAILURE;
+    }
+    memset(buffer, 0, MAX_LINE);
+    char *file_buffer = malloc(MAX_LINE * sizeof(char));
+    if (file_buffer == NULL) {
+        perror("malloc error");
+        return EXIT_FAILURE;
+    }
+    memset(file_buffer, 0, MAX_LINE);
 
     // Create the server socket
     int server_fd;
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
         perror("socket error");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     struct sockaddr_in address;
@@ -30,29 +41,30 @@ int main(int argc, char* argv[]) {
     // Bind the socket to the server's address
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
         perror("bind error");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     // Put the server in listening mode
     if (listen(server_fd, 3) < 0) {
         perror("listen error");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
+    } else {
+        printf("Server listening on %s:%d\n", ip, port);
     }
 
     // Open the "hash_list" and "result" files
     FILE *hash_file = fopen("hash_list", "r");
     if (hash_file == NULL) {
         perror("fopen error");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
     FILE *result_file = fopen("result", "a");
     if (result_file == NULL) {
         perror("fopen error");
-        exit(EXIT_FAILURE);
+        return EXIT_FAILURE;
     }
 
     // Loop to read each line from the "hash_list" file
-    char file_buffer[MAX_LINE] = {0};
     while (fgets(file_buffer, MAX_LINE, hash_file) != NULL) {
 
         // Remove the newline character from the string
@@ -65,7 +77,6 @@ int main(int argc, char* argv[]) {
             perror("accept error");
             continue;
         }
-
         printf("New connection from %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
         // Send the line to the client and store it in the "result" file
@@ -75,9 +86,9 @@ int main(int argc, char* argv[]) {
         // Receive the line sent back by the client
         read(new_socket, buffer, MAX_LINE);
 
-        printf("Received %s from client\n", buffer);
+        printf("Received the password : %s\n", buffer);
 
-        // Store the line sent back by the client in the "result" file
+        // Store the password in the "result" file
         fprintf(result_file, "%s\n", buffer);
 
         // Close the socket
@@ -87,5 +98,6 @@ int main(int argc, char* argv[]) {
     // Close the files
     fclose(hash_file);
     fclose(result_file);
+    free(buffer);
     return 0;
 }
