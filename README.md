@@ -40,6 +40,8 @@ En somme, un hash breaker souligne l'importance de choisir des algorithmes de ha
 │   \-- client.c
 +-- docs
 +-- lib
+│   +-- comlib.c
+│   +-- comlib.h
 │   +-- hashlib.c
 │   +-- hashlib.h
 │   +-- loglib.c

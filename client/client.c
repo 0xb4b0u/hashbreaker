@@ -6,20 +6,31 @@
 
 #include "./../lib/hashlib.h"
 #include "./../lib/loglib.h"
+#include "./../lib/comlib.h"
 
 #define MAX_LINE 1024
 
 int main(int argc, char* argv[]) {
+    // Check the number of arguments
+    if (argc != 3) {
+        printf("Usage: %s <ip> <port>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
     // Get the server's IP and port from the arguments.
     char *ip = argv[1];
     int port = atoi(argv[2]);
 
-    int sock;
-    char buffer[MAX_LINE] = {0};
+
+    char *buffer = malloc(MAX_LINE * sizeof(char));
+    if (buffer == NULL) {
+        perror("malloc error");
+        return EXIT_FAILURE;
+    }
 
     // Create the client socket
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        perror("socket error");
+    int sock = create_socket();
+    if (sock == -1) {
         return EXIT_FAILURE;
     }
 
@@ -29,13 +40,14 @@ int main(int argc, char* argv[]) {
     serv_addr.sin_port = htons(port);
 
     // Connect to the server
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        perror("connect error");
+    if (connect_to_server(sock, &serv_addr) == -1) {
         return EXIT_FAILURE;
     }
 
     // Receive the hash from the server
-    read(sock, buffer, MAX_LINE);
+    if (receive_data(sock, buffer, MAX_LINE) == -1) {
+        return EXIT_FAILURE;
+    }
     char *hash = buffer;
     printf("Received hash from server: %s\n", hash);
 
@@ -53,13 +65,15 @@ int main(int argc, char* argv[]) {
         if (result != NULL) {
             printf("Found password: %s\n", result);
             // Send the password to the server
-            send(sock, result, strlen(result), 0);
+            if (send_data(sock, result) == -1) {
+                return EXIT_FAILURE;
+            }
             break;
         }
     }
     // Free the memory allocated and close the socket
     string_free(str);
+    free(buffer);
     close(sock);
-
     return 0;
 }

@@ -4,21 +4,29 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
+#include "./../lib/comlib.h"
+
 #define MAX_LINE 1024
 
 int main(int argc, char* argv[]) {
+    // Check the number of arguments
+    if (argc != 3) {
+        printf("Usage: %s <ip> <port>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
 
     // Get the server's IP and port from the arguments.
     char *ip = argv[1];
     int port = atoi(argv[2]);
 
-    // Define the buffer and initialize it to 0
+    // Define the buffers and initialize them to 0
     char *buffer = malloc(MAX_LINE * sizeof(char));
     if (buffer == NULL) {
         perror("malloc error");
         return EXIT_FAILURE;
     }
     memset(buffer, 0, MAX_LINE);
+
     char *file_buffer = malloc(MAX_LINE * sizeof(char));
     if (file_buffer == NULL) {
         perror("malloc error");
@@ -27,9 +35,8 @@ int main(int argc, char* argv[]) {
     memset(file_buffer, 0, MAX_LINE);
 
     // Create the server socket
-    int server_fd;
-    if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
-        perror("socket error");
+    int server_fd = create_socket();
+    if (server_fd == -1) {
         return EXIT_FAILURE;
     }
 
@@ -53,16 +60,9 @@ int main(int argc, char* argv[]) {
     }
 
     // Open the "hash_list" and "result" files
-    FILE *hash_file = fopen("hash_list", "r");
-    if (hash_file == NULL) {
-        perror("fopen error");
-        return EXIT_FAILURE;
-    }
-    FILE *result_file = fopen("result", "a");
-    if (result_file == NULL) {
-        perror("fopen error");
-        return EXIT_FAILURE;
-    }
+    FILE *hash_file = open_file("hash_list", "r");
+
+    FILE *result_file = open_file("result", "a");
 
     // Loop to read each line from the "hash_list" file
     while (fgets(file_buffer, MAX_LINE, hash_file) != NULL) {
@@ -80,11 +80,15 @@ int main(int argc, char* argv[]) {
         printf("New connection from %s:%d\n", inet_ntoa(address.sin_addr), ntohs(address.sin_port));
 
         // Send the line to the client and store it in the "result" file
-        send(new_socket, file_buffer, strlen(file_buffer), 0);
+        if (send_data(new_socket, file_buffer) == -1) {
+            return EXIT_FAILURE;
+        }
         fprintf(result_file, "%s : ", file_buffer);
 
         // Receive the line sent back by the client
-        read(new_socket, buffer, MAX_LINE);
+        if (receive_data(new_socket, buffer, MAX_LINE) == -1) {
+            return EXIT_FAILURE;
+        }
 
         printf("Received the password : %s\n", buffer);
 
@@ -94,10 +98,11 @@ int main(int argc, char* argv[]) {
         // Close the socket
         close(new_socket);
     }
+    printf("No more hashes to crack\n"
+           "exiting...\n");
 
     // Close the files
-    fclose(hash_file);
-    fclose(result_file);
+    close_files(2, hash_file, result_file);
     free(buffer);
     return 0;
 }
