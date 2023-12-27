@@ -61,5 +61,19 @@ char* crack_hash(struct string* str, char* hash_to_find, int index, int max_size
             return result;
         }
     }
+    for (char c = 'A'; c <= 'Z'; c++) {
+        str->str[index] = c;
+        char* result = crack_hash(str, hash_to_find, index + 1, max_size);
+        if (result != NULL) {
+            return result;
+        }
+    }
+    for (char c = '0'; c <= '9'; c++) {
+        str->str[index] = c;
+        char* result = crack_hash(str, hash_to_find, index + 1, max_size);
+        if (result != NULL) {
+            return result;
+        }
+    }
     return NULL;
 }
