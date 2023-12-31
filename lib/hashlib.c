@@ -47,6 +47,7 @@ char* crack_hash(struct string* str, char* hash_to_find, int index, int max_size
         str->str[index] = '\0';
         char* hash = calculate_hash(str->str);
         if (strcmp(hash, hash_to_find) == 0) {
+            free(hash);
             return str->str;
         }
         free(hash);

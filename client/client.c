@@ -5,7 +5,6 @@
 #include <arpa/inet.h>
 
 #include "./../lib/hashlib.h"
-#include "./../lib/loglib.h"
 #include "./../lib/comlib.h"
 
 #define MAX_LINE 1024
@@ -22,7 +21,7 @@ int main(int argc, char* argv[]) {
     int port = atoi(argv[2]);
 
 
-    char *buffer = malloc(MAX_LINE * sizeof(char));
+    char *buffer = calloc(MAX_LINE, sizeof(char));
     if (buffer == NULL) {
         perror("malloc error");
         return EXIT_FAILURE;

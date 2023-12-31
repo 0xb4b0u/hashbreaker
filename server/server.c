@@ -20,23 +20,23 @@ int main(int argc, char* argv[]) {
     int port = atoi(argv[2]);
 
     // Define the buffers and initialize them to 0
-    char *buffer = malloc(MAX_LINE * sizeof(char));
+    char *buffer = calloc(MAX_LINE, sizeof(char));
     if (buffer == NULL) {
         perror("malloc error");
         return EXIT_FAILURE;
     }
-    memset(buffer, 0, MAX_LINE);
 
-    char *file_buffer = malloc(MAX_LINE * sizeof(char));
+    char *file_buffer = calloc(MAX_LINE, sizeof(char));
     if (file_buffer == NULL) {
         perror("malloc error");
         return EXIT_FAILURE;
     }
-    memset(file_buffer, 0, MAX_LINE);
 
     // Create the server socket
     int server_fd = create_socket();
     if (server_fd == -1) {
+        free(buffer);
+        free(file_buffer);
         return EXIT_FAILURE;
     }
 
@@ -48,12 +48,16 @@ int main(int argc, char* argv[]) {
     // Bind the socket to the server's address
     if (bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0) {
         perror("bind error");
+        free(buffer);
+        free(file_buffer);
         return EXIT_FAILURE;
     }
 
     // Put the server in listening mode
     if (listen(server_fd, 3) < 0) {
         perror("listen error");
+        free(buffer);
+        free(file_buffer);
         return EXIT_FAILURE;
     } else {
         printf("Server listening on %s:%d\n", ip, port);
@@ -81,12 +85,20 @@ int main(int argc, char* argv[]) {
 
         // Send the line to the client and store it in the "result" file
         if (send_data(new_socket, file_buffer) == -1) {
+            perror("send error");
+            close_files(2, hash_file, result_file);
+            free(buffer);
+            free(file_buffer);
             return EXIT_FAILURE;
         }
         fprintf(result_file, "%s : ", file_buffer);
 
         // Receive the line sent back by the client
         if (receive_data(new_socket, buffer, MAX_LINE) == -1) {
+            perror("receive error");
+            close_files(2, hash_file, result_file);
+            free(buffer);
+            free(file_buffer);
             return EXIT_FAILURE;
         }
 
@@ -104,5 +116,6 @@ int main(int argc, char* argv[]) {
     // Close the files
     close_files(2, hash_file, result_file);
     free(buffer);
+    free(file_buffer);
     return 0;
 }
