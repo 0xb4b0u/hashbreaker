@@ -10,14 +10,15 @@
 
 int main(int argc, char* argv[]) {
     // Check the number of arguments
-    if (argc != 3) {
-        printf("Usage: %s <ip> <port>\n", argv[0]);
+    if (argc != 4) {
+        printf("Usage: %s <ip> <port> <hash_list_path>\n", argv[0]);
         return EXIT_FAILURE;
     }
 
     // Get the server's IP and port from the arguments.
     char *ip = argv[1];
     int port = atoi(argv[2]);
+    char *hash_list_path = argv[3];
 
     // Define the buffers and initialize them to 0
     char *buffer = calloc(MAX_LINE, sizeof(char));
@@ -64,7 +65,7 @@ int main(int argc, char* argv[]) {
     }
 
     // Open the "hash_list" and "result" files
-    FILE *hash_file = open_file("hash_list", "r");
+    FILE *hash_file = open_file(hash_list_path, "r");
 
     FILE *result_file = open_file("result", "a");
 
