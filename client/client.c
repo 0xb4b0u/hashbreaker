@@ -50,6 +50,9 @@ int main(int argc, char* argv[]) {
     char *hash = buffer;
     printf("Received hash from server: %s\n", hash);
 
+    // Check the hash's type
+    char* hash_type = guess_hash_type(hash);
+
     // Crack the hash
     // Change this to the desired maximum size
     int max_size = 5;
@@ -60,7 +63,7 @@ int main(int argc, char* argv[]) {
     }
 
     for (int size = 1; size <= max_size; size++) {
-        char* result = crack_hash(str, hash, 0, size);
+        char* result = crack_hash(str, hash, 0, size, hash_type);
         if (result != NULL) {
             printf("Found password: %s\n", result);
             // Send the password to the server

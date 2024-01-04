@@ -110,6 +110,10 @@ int main(int argc, char* argv[]) {
 
         // Close the socket
         close(new_socket);
+
+        // Reset the buffer
+        memset(buffer, 0, MAX_LINE);
+        memset(file_buffer, 0, MAX_LINE);
     }
     printf("No more hashes to crack\n"
            "exiting...\n");

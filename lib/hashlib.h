@@ -6,6 +6,7 @@
 #include <openssl/err.h>
 #include "stringslib.h"
 
-char* calculate_hash(char* str);
-char* crack_hash(struct string* str, char* hash_to_find, int index, int max_size);
+char* guess_hash_type(char* hash);
+char* calculate_hash(char* str, const char* hash_type);
+char* crack_hash(struct string* str, char* hash_to_find, int index, int max_size, const char* hash_type);
 #endif //HASH_BREAKER_HASHLIB_H
