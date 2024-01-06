@@ -1,7 +1,3 @@
-//
-// Created by Baptiste Oger on 20/12/2023.
-//
-
 #ifndef HASH_BREAKER_STRINGSLIB_H
 #define HASH_BREAKER_STRINGSLIB_H
 
@@ -11,14 +7,15 @@
 #include <string.h>
 
 // Defining the string's structure
-struct string {
-    char* str;
+struct string
+{
+    char *str;
     int buffer_size;
     int str_size;
 };
 
 // Declaring functions
-struct string* string_init(int buffer_size);
-void string_free(struct string* str);
+struct string *string_init(int buffer_size);
+void string_free(struct string *str);
 
-#endif //HASH_BREAKER_STRINGSLIB_H
+#endif // HASH_BREAKER_STRINGSLIB_H

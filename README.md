@@ -1,4 +1,5 @@
-# hashbreaker
+# hash breaker
+
 <img src="https://img.shields.io/github/languages/top/0xb4b0u/hashbreaker?style&color=5D6D7E" alt="GitHub top language" />
 <img src="https://img.shields.io/github/languages/code-size/0xb4b0u/hashbreaker?style&color=5D6D7E" alt="GitHub code size in bytes" />
 <img src="https://img.shields.io/github/commit-activity/m/0xb4b0u/hashbreaker?style&color=5D6D7E" alt="GitHub commit activity" />
@@ -7,32 +8,36 @@
 ---
 
 ## 📒 Table des matières
-- [📒 Table des matières](#-table-des-matières)
-- [👾 Un hashbreaker ?](#-un-hashbreaker-)
-- [📂 Structure du projet](#-structure-du-projet)
-- [🧩 Prérequis](#-prérequis)
-- [🚀 Installation et Utilisation](#-installation-et-utilisation)
-- [?? Améliorations possibles](#-améliorations-possibles)
-- [🤝 Auteurs](#-auteurs)
-- [📄 License](#-license)
-- [👏 Remerciements](#-remerciements)
+
+- [hash breaker](#hash-breaker)
+  - [📒 Table des matières](#-table-des-matières)
+  - [👾 Un hash breaker ?](#-un-hash-breaker-)
+  - [📂 Structure du projet](#-structure-du-projet)
+  - [🧩 Prérequis](#-prérequis)
+  - [🚀 Installation et Utilisation](#-installation-et-utilisation)
+  - [🔨 Améliorations possibles](#-améliorations-possibles)
+  - [🤝 Auteurs](#-auteurs)
+  - [📄 License](#-license)
+  - [👏 Remerciements](#-remerciements)
 
 ---
 
-## 👾 Un hashbreaker ?
-Un "hash breaker" est un outil ou un programme conçu pour décrypter ou casser des fonctions de hachage. 
-Les fonctions de hachage sont des algorithmes qui transforment des données en une chaîne de caractères unique et apparemment aléatoire, appelée "hash". 
+## 👾 Un hash breaker ?
+
+Un "hash breaker" est un outil ou un programme conçu pour décrypter ou casser des fonctions de hachage.
+Les fonctions de hachage sont des algorithmes qui transforment des données en une chaîne de caractères unique et apparemment aléatoire, appelée "hash".
 Ces hashes sont souvent utilisés pour stocker de manière sécurisée des mots de passe ou vérifier l'intégrité des données.
 
-La valeur d'un hash breaker réside dans sa capacité à compromettre la sécurité de ces systèmes en inversant le processus de hachage, révélant ainsi le contenu original des données. 
-Cela peut être utilisé de manière éthique, par exemple, pour tester la robustesse des systèmes de sécurité, mais peut aussi être exploité de manière malveillante pour accéder à des informations sensibles. 
+La valeur d'un hash breaker réside dans sa capacité à compromettre la sécurité de ces systèmes en inversant le processus de hachage, révélant ainsi le contenu original des données.
+Cela peut être utilisé de manière éthique, par exemple, pour tester la robustesse des systèmes de sécurité, mais peut aussi être exploité de manière malveillante pour accéder à des informations sensibles.
 
 En somme, un hash breaker souligne l'importance de choisir des algorithmes de hachage robustes et de mettre en place des mesures de sécurité supplémentaires pour protéger les données sensibles.
 
 ---
 
 ## 📂 Structure du projet
-```
+
+```bash
 +-- LICENSE.md
 +-- Makefile
 +-- README.md
@@ -55,6 +60,7 @@ En somme, un hash breaker souligne l'importance de choisir des algorithmes de ha
 ---
 
 ## 🧩 Prérequis
+
 Pour exécuter ce projet, vous aurez besoin des outils suivants installés sur votre machine :
 
 - [Make](https://www.gnu.org/software/make/) : un outil qui contrôle la génération de programmes exécutables et d'autres tâches non liées à la compilation de fichiers source. Il est généralement préinstallé sur la plupart des distributions Linux.
@@ -66,23 +72,27 @@ Pour exécuter ce projet, vous aurez besoin des outils suivants installés sur v
 ## 🚀 Installation et Utilisation
 
 Pour cloner ce projet sur votre machine locale, ouvrez un terminal et exécutez la commande suivante :
+
 ```bash
 git clone https://github.com/0xb4b0u/hashbreaker.git
 ```
 
 Ensuite, vous pouvez compiler le projet en exécutant les commandes suivantes :
+
 ```bash
 cd hashbreaker
 make all
 ```
 
 Pour lancer le serveur, exécutez la commande suivante :
-```bash
-./server/server <IP> <PORT>
-```
-⚠️ le serveur doit être lancé avant le client. Un fichier "hash_list" contenant les hash à casser doit être présent dans le dossier "server". ⚠️
 
+```bash
+./server/server <IP> <PORT> <hash_list_path>
+```
+
+⚠️ le serveur doit être lancé avant le client.⚠️
 Pour lancer le client, exécutez la commande suivante :
+
 ```bash
 ./client/client <IP> <PORT>
 ```
@@ -93,15 +103,15 @@ Pour lancer le client, exécutez la commande suivante :
 
 > - [ ] `ℹ️  Implémenter un système de logs`
 > - [ ] `ℹ️  Utilisation de threads afin d'améliorer les performances`
-> - [ ] `ℹ️ Implémenter le choix du système de hashage` 
+> - [X] `ℹ️  Implémenter le choix du système de hashage`
 > - [ ] `ℹ️ ...`
 
 ---
 
 ## 🤝 Auteurs
 
-* **Baptiste Oger** - *Travail initial* - [0xb4b0u](https://github.com/0xb4b0u)
-* **Alexandre Bousard** - *Travail initial* - [AlexGalaxis](https://github.com/AlexGalaxis)
+- **Baptiste Oger** - *Travail initial* - [0xb4b0u](https://github.com/0xb4b0u)
+- **Alexandre Bousard** - *Travail initial* - [AlexGalaxis](https://github.com/AlexGalaxis)
 
 Voir aussi la liste des [contributeurs](https://github.com/0xb4b0u/hashbreaker/graphs/contributors) qui ont participé à ce projet.
 
@@ -115,5 +125,5 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE.md](LICENSE.md) pour p
 
 ## 👏 Remerciements
 
-* Notre professeur de développement, Monsieur DUVILLIE Guillerme.
-* Tous les autres membres de l'équipe professorale de l'IESN.
+- Notre professeur de développement, Monsieur DUVILLIE Guillerme.
+- Tous les autres membres de l'équipe professorale de l'IESN.
