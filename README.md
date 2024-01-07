@@ -44,6 +44,8 @@ En somme, un hash breaker souligne l'importance de choisir des algorithmes de ha
 +-- client
 │   \-- client.c
 +-- docs
+|   +-- Ennonce.pdf
+|   \-- Rapport.pdf
 +-- lib
 │   +-- comlib.c
 │   +-- comlib.h
@@ -87,23 +89,33 @@ make all
 Pour lancer le serveur, exécutez la commande suivante :
 
 ```bash
-./server/server <IP> <PORT> <hash_list_path>
+cd server
+./server -i <IP> -p <PORT> -h <hash_list_path>
 ```
 
-⚠️ le serveur doit être lancé avant le client.⚠️
 Pour lancer le client, exécutez la commande suivante :
 
 ```bash
-./client/client <IP> <PORT>
+cd client
+./client -i <IP> -p <PORT>
 ```
+
+⚠️ le serveur doit être lancé avant le client ⚠️
+
+Le hash breaker prend en compte des hash dans ces formats :
+
+- MD5
+- SHA1
+- SHA256
+- SHA512
 
 ---
 
 ## 🔨 Améliorations possibles
 
+> - [X] `ℹ️  Implémenter le choix du système de hashage`
 > - [ ] `ℹ️  Implémenter un système de logs`
 > - [ ] `ℹ️  Utilisation de threads afin d'améliorer les performances`
-> - [X] `ℹ️  Implémenter le choix du système de hashage`
 > - [ ] `ℹ️ ...`
 
 ---
