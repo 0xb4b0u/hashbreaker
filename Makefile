@@ -2,7 +2,7 @@
 CC = gcc
 
 # compiler flags
-CFLAGS = -o
+CFLAGS = -O3 -o
 
 # compiler libraries
 LIBS = -l crypto -l ssl
