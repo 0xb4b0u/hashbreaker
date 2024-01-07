@@ -11,16 +11,32 @@
 
 int main(int argc, char *argv[])
 {
-    // Check the number of arguments
-    if (argc != 3)
+    // Get the server's IP and port from the arguments.
+    char *ip;
+    int port;
+    int opt;
+
+    while ((opt = getopt(argc, argv, "i:p:")), opt != -1)
     {
-        printf("Usage: %s <ip> <port>\n", argv[0]);
-        return EXIT_FAILURE;
+        switch (opt)
+        {
+        case 'i':
+            ip = optarg;
+            break;
+        case 'p':
+            port = atoi(optarg);
+            break;
+        case '?':
+            printf("Usage: %s -i <ip> -p <port>\n", argv[0]);
+            return EXIT_FAILURE;
+        }
     }
 
-    // Get the server's IP and port from the arguments.
-    char *ip = argv[1];
-    int port = atoi(argv[2]);
+    if (ip == NULL || port == -1)
+    {
+        printf("Usage: %s -i <ip> -p <port>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
 
     char *buffer = calloc(MAX_LINE, sizeof(char));
     if (buffer == NULL)

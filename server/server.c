@@ -10,17 +10,36 @@
 
 int main(int argc, char *argv[])
 {
-    // Check the number of arguments
-    if (argc != 4)
+    // Get the server's IP, port and hash list path from the arguments.
+    char *ip;
+    int port;
+    char *hash_list_path;
+    int opt;
+
+    while ((opt = getopt(argc, argv, "i:p:h:")), opt != -1)
     {
-        printf("Usage: %s <ip> <port> <hash_list_path>\n", argv[0]);
-        return EXIT_FAILURE;
+        switch (opt)
+        {
+        case 'i':
+            ip = optarg;
+            break;
+        case 'p':
+            port = atoi(optarg);
+            break;
+        case 'h':
+            hash_list_path = optarg;
+            break;
+        case '?':
+            printf("Usage: %s -i <ip> -p <port> -h <hash_list_path>\n", argv[0]);
+            return EXIT_FAILURE;
+        }
     }
 
-    // Get the server's IP and port from the arguments.
-    char *ip = argv[1];
-    int port = atoi(argv[2]);
-    char *hash_list_path = argv[3];
+    if (ip == NULL || port == -1 || hash_list_path == NULL)
+    {
+        printf("Usage: %s -i <ip> -p <port> -h <hash_list_path>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
 
     // Define the buffers and initialize them to 0
     char *buffer = calloc(MAX_LINE, sizeof(char));
